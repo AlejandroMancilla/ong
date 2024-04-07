@@ -18,24 +18,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.campus.ong.dto.CampusDTO;
 import com.campus.ong.exception.BussinesRuleException;
-import com.campus.ong.repositories.entities.Campus;
-import com.campus.ong.services.ServiceCampus;
+import com.campus.ong.repositories.entities.Occupation;
+import com.campus.ong.services.ServiceOccupation;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/campuses/")
+@RequestMapping("/occupations/")
 @AllArgsConstructor
-public class CampusController {
+public class OccupationController {
     
-    private ServiceCampus serviceCampus;
-    
+    private ServiceOccupation serviceOccupation;
+
     @GetMapping("/")
-    public ResponseEntity<List<CampusDTO>> findAll() {
-        List<CampusDTO> findAll = serviceCampus.findAll();
+    public ResponseEntity<List<Occupation>> findAll() {
+        List<Occupation> findAll = serviceOccupation.findAll();
         if(findAll == null || findAll.isEmpty()){
             return ResponseEntity.noContent().build();
         }else{
@@ -46,14 +45,15 @@ public class CampusController {
     @GetMapping("/{id}")
     public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id)throws BussinesRuleException{
          Map<String,Object> response = new HashMap<>();
-         Campus campus = serviceCampus.findById(id);
-         response.put("campus", campus);
+         Occupation occupation = serviceOccupation.findById(id);
+         response.put("occupation", occupation);
          return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody CampusDTO campus, BindingResult result){
-        CampusDTO campusNew = null;
+    public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody Occupation occupation, BindingResult result) {
+
+        Occupation occupationNew = null;
 
         Map<String, Object> response = new HashMap<>();
 
@@ -66,24 +66,23 @@ public class CampusController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         try {
-            campusNew = serviceCampus.save(campus);
+            occupationNew = serviceOccupation.save(occupation);
         } catch (DataAccessException e) {
-            response.put("message", "Error when inserting in the database CampusDTO");
+            response.put("message", "Error when inserting in the database");
             response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("message", "Campus has been successfully created");
-        response.put("campus", campusNew);
+        response.put("message", "Occupation has been successfully created");
+        response.put("occupation", occupationNew);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody Campus campus, BindingResult result,
+    public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody Occupation occupation, BindingResult result,
             @PathVariable Long id) {
 
-        Campus campusUpdate = null;
+        Occupation occupationUpdate = null;
 
         Map<String, Object> response = new HashMap<>();
 
@@ -97,7 +96,7 @@ public class CampusController {
         }
         try {
 
-            campusUpdate = serviceCampus.update(id, campus);
+            occupationUpdate = serviceOccupation.update(id, occupation);
 
         } catch (DataAccessException e) {
             response.put("message", "Error when inserting in the database");
@@ -106,8 +105,8 @@ public class CampusController {
 
         }
 
-        response.put("mensaje", "Campus has been successfully created");
-        response.put("campus", campusUpdate);
+        response.put("mensaje", "Occupation has been successfully created");
+        response.put("cliente", occupationUpdate);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -117,14 +116,15 @@ public class CampusController {
 
         Map<String, Object> response = new HashMap<>();
         try {
-            serviceCampus.delete(id);
+            serviceOccupation.delete(id);
         } catch (DataAccessException e) {
             response.put("message", "Error when inserting in the database");
             response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("message", "Campus has been successfully deleted");
+        response.put("message", "Occupation has been successfully deleted");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    
 }

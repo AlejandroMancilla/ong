@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements Serializable {
+public class UserE implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.campus.ong.exception.BussinesRuleException;
 import com.campus.ong.repositories.RepositoryUser;
 import com.campus.ong.repositories.entities.RolType;
-import com.campus.ong.repositories.entities.User;
+import com.campus.ong.repositories.entities.UserE;
 import com.campus.ong.services.ServiceUser;
 
 import lombok.AllArgsConstructor;
@@ -23,21 +23,21 @@ public class ServiceUserImpl implements ServiceUser{
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> findAll() {
-        return (List<User>) repositoryUser.findAll();
+    public List<UserE> findAll() {
+        return (List<UserE>) repositoryUser.findAll();
     }
 
     @Override
-    public User save(User user) {
+    public UserE save(UserE user) {
         return repositoryUser.save(user);
     }
 
     @Override
-    public User update(Long id, User user) {
-        Optional<User> userCurrentOptional = repositoryUser.findById(id);
+    public UserE update(Long id, UserE user) {
+        Optional<UserE> userCurrentOptional = repositoryUser.findById(id);
 
         if(userCurrentOptional.isPresent()){
-            User userCurrent = userCurrentOptional.get();
+            UserE userCurrent = userCurrentOptional.get();
             userCurrent.setName(user.getName());
             repositoryUser.save(userCurrent);
             return userCurrent;
@@ -48,15 +48,15 @@ public class ServiceUserImpl implements ServiceUser{
 
     @Override
     public void delete(Long id) {
-        Optional<User> userOptional=repositoryUser.findById(id);
+        Optional<UserE> userOptional=repositoryUser.findById(id);
         if(userOptional.isPresent()){
             repositoryUser.delete(userOptional.get());
         }   
     }
 
     @Override
-    public User findById(Long id) throws BussinesRuleException {
-        Optional<User> userOptional = repositoryUser.findById(id);
+    public UserE findById(Long id) throws BussinesRuleException {
+        Optional<UserE> userOptional = repositoryUser.findById(id);
         if(!userOptional.isPresent()){
             BussinesRuleException exception= new BussinesRuleException("1004","Error! User doesn't exist", HttpStatus.PRECONDITION_FAILED);
             throw exception; 
@@ -64,12 +64,12 @@ public class ServiceUserImpl implements ServiceUser{
         return userOptional.get();
     }
 
-    public User findByEmail(String email) {
+    public UserE findByEmail(String email) {
         return repositoryUser.findByEmail(email);
     }
 
     @Override
-    public List<User> findByRole(RolType role) {
+    public List<UserE> findByRole(RolType role) {
         return repositoryUser.findByRole(role);
     }
 }

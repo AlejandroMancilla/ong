@@ -4,22 +4,22 @@ import java.util.List;
 
 import com.campus.ong.exception.BussinesRuleException;
 import com.campus.ong.repositories.entities.RolType;
-import com.campus.ong.repositories.entities.User;
+import com.campus.ong.repositories.entities.UserE;
 
 public interface ServiceUser {
     
-    List<User> findAll();
+    List<UserE> findAll();
 
-    User findById(Long id) throws BussinesRuleException;
+    UserE findById(Long id) throws BussinesRuleException;
 
-    User save(User User);
+    UserE save(UserE User);
 
-    User update(Long id, User User);
+    UserE update(Long id, UserE User);
 
     void delete(Long id);
 
-    User findByEmail(String email);
+    UserE findByEmail(String email);
 
-    List<User> findByRole(RolType role);
+    List<UserE> findByRole(RolType role);
 
 }

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.campus.ong.exception.BussinesRuleException;
 import com.campus.ong.repositories.entities.RolType;
-import com.campus.ong.repositories.entities.User;
+import com.campus.ong.repositories.entities.UserE;
 import com.campus.ong.services.ServiceUser;
 
 import jakarta.validation.Valid;
@@ -34,8 +34,8 @@ public class UserController {
     private ServiceUser serviceUser;
     
     @GetMapping("/")
-    public ResponseEntity<List<User>> findAll() {
-        List<User> findAll = serviceUser.findAll();
+    public ResponseEntity<List<UserE>> findAll() {
+        List<UserE> findAll = serviceUser.findAll();
         if(findAll == null || findAll.isEmpty()){
             return ResponseEntity.noContent().build();
         }else{
@@ -46,7 +46,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id)throws BussinesRuleException{
          Map<String,Object> response = new HashMap<>();
-         User user = serviceUser.findById(id);
+         UserE user = serviceUser.findById(id);
          response.put("user",  user);
          return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -56,7 +56,7 @@ public class UserController {
 
          Map<String,Object> response=new HashMap<>();
 
-         User user=serviceUser.findByEmail(email);
+         UserE user=serviceUser.findByEmail(email);
 
          if(user!=null){
             response.put("user",user);
@@ -68,8 +68,8 @@ public class UserController {
     }
 
     @GetMapping("/byRole/{role}")
-    public ResponseEntity<List<User>> findByRole(@PathVariable RolType role) {
-        List<User> users = serviceUser.findByRole(role);
+    public ResponseEntity<List<UserE>> findByRole(@PathVariable RolType role) {
+        List<UserE> users = serviceUser.findByRole(role);
         if (users.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -77,9 +77,9 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody User user, BindingResult result) {
+    public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody UserE user, BindingResult result) {
 
-        User userNew = null;
+        UserE userNew = null;
 
         Map<String, Object> response = new HashMap<>();
 
@@ -105,10 +105,10 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody User user, BindingResult result,
+    public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody UserE user, BindingResult result,
             @PathVariable Long id) {
 
-        User userUpdate = null;
+        UserE userUpdate = null;
 
         Map<String, Object> response = new HashMap<>();
 

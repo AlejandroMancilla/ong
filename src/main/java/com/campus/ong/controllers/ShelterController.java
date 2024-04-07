@@ -18,42 +18,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.campus.ong.dto.CampusDTO;
 import com.campus.ong.exception.BussinesRuleException;
-import com.campus.ong.repositories.entities.Campus;
-import com.campus.ong.services.ServiceCampus;
+import com.campus.ong.repositories.entities.City;
+import com.campus.ong.repositories.entities.Shelter;
+import com.campus.ong.services.ServiceShelter;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/campuses/")
+@RequestMapping("/shelters/")
 @AllArgsConstructor
-public class CampusController {
-    
-    private ServiceCampus serviceCampus;
-    
-    @GetMapping("/")
-    public ResponseEntity<List<CampusDTO>> findAll() {
-        List<CampusDTO> findAll = serviceCampus.findAll();
-        if(findAll == null || findAll.isEmpty()){
+public class ShelterController {
+
+    private ServiceShelter serviceShelter;
+
+    @GetMapping
+    public ResponseEntity<List<Shelter>> getAllShelters() {
+        List<Shelter> shelters = serviceShelter.findAll();
+        if(shelters == null || shelters.isEmpty()){
             return ResponseEntity.noContent().build();
         }else{
-            return ResponseEntity.ok(findAll);
+            return ResponseEntity.ok(shelters);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id)throws BussinesRuleException{
-         Map<String,Object> response = new HashMap<>();
-         Campus campus = serviceCampus.findById(id);
-         response.put("campus", campus);
-         return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id) throws BussinesRuleException {
+        Map<String,Object> response = new HashMap<>();
+        Shelter shelter = serviceShelter.findById(id);
+        response.put("shelter", shelter);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody CampusDTO campus, BindingResult result){
-        CampusDTO campusNew = null;
+    @PostMapping
+    public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody Shelter shelter, BindingResult result){
+        Shelter shelterNew = null;
 
         Map<String, Object> response = new HashMap<>();
 
@@ -66,24 +66,23 @@ public class CampusController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         try {
-            campusNew = serviceCampus.save(campus);
+            shelterNew = serviceShelter.save(shelter);
         } catch (DataAccessException e) {
-            response.put("message", "Error when inserting in the database CampusDTO");
+            response.put("message", "Error when inserting in the database");
             response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("message", "Campus has been successfully created");
-        response.put("campus", campusNew);
+        response.put("message", "Shelter has been successfully created");
+        response.put("shelter", shelterNew);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody Campus campus, BindingResult result,
-            @PathVariable Long id) {
-
-        Campus campusUpdate = null;
+    public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody Shelter shelter, BindingResult result,
+    @PathVariable Long id) {
+       
+        Shelter shelterUpdate = null;
 
         Map<String, Object> response = new HashMap<>();
 
@@ -97,7 +96,7 @@ public class CampusController {
         }
         try {
 
-            campusUpdate = serviceCampus.update(id, campus);
+            shelterUpdate = serviceShelter.update(id, shelter);
 
         } catch (DataAccessException e) {
             response.put("message", "Error when inserting in the database");
@@ -106,25 +105,25 @@ public class CampusController {
 
         }
 
-        response.put("mensaje", "Campus has been successfully created");
-        response.put("campus", campusUpdate);
+        response.put("mensaje", "Shelter has been successfully created");
+        response.put("shelter", shelterUpdate);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
-
         Map<String, Object> response = new HashMap<>();
         try {
-            serviceCampus.delete(id);
+            serviceShelter.delete(id);
         } catch (DataAccessException e) {
             response.put("message", "Error when inserting in the database");
             response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("message", "Campus has been successfully deleted");
+        response.put("message", "Shelter has been successfully deleted");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
 }

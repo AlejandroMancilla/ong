@@ -2,6 +2,7 @@ package com.campus.ong.repositories.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -44,9 +45,9 @@ public class Campus implements Serializable {
     private City city;
 
     @JsonIgnoreProperties(value={"campuses", "hibernateLazyInitializer", "handler"}, allowSetters=true)
-    @JoinColumn(name = "id_director")
+    @JoinColumn(name = "id_director", unique = true)
     @OneToOne(fetch = FetchType.LAZY)
-    private User director;
+    private UserE director;
 
     @JsonIgnore
     @OneToMany(mappedBy = "campus", cascade = CascadeType.ALL, orphanRemoval = true)

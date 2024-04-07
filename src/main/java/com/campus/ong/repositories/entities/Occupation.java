@@ -2,6 +2,8 @@ package com.campus.ong.repositories.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,9 +33,12 @@ public class Occupation {
     @Column(nullable = false)
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "occupation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<VolunteerH> volunteer;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "occupation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RequerimentH> requeriments;
+    
 }

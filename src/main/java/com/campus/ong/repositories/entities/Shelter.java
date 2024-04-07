@@ -3,6 +3,9 @@ package com.campus.ong.repositories.entities;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,10 +37,12 @@ public class Shelter implements Serializable {
     @Column(nullable = false)
     private String name;
 
+    @JsonIgnoreProperties(value={"shelters", "hibernateLazyInitializer", "handler"}, allowSetters=true)
     @JoinColumn(name = "id_city")
     @ManyToOne(fetch = FetchType.LAZY)
     private City city;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Shipping> shippings;
 

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -42,6 +44,7 @@ public class Shipping implements Serializable {
     @Column(nullable = false)
     private boolean finished;
 
+    @JsonIgnoreProperties(value={"shippings", "hibernateLazyInitializer", "handler"}, allowSetters=true)
     @ManyToMany
     @JoinTable(
         name = "shipping_campus", 
@@ -49,13 +52,16 @@ public class Shipping implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "id_campus"))
     private List<Campus> campuses;
 
+    @JsonIgnoreProperties(value={"shippings", "hibernateLazyInitializer", "handler"}, allowSetters=true)
     @ManyToOne()
     @JoinColumn(name = "id_shelter")
     private Shelter shelter;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "shipping", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RequerimentH> requeriments;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "shipping", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MaterialAid> materialAids;
 

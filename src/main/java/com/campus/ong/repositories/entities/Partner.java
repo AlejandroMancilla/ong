@@ -39,7 +39,7 @@ public class Partner implements Serializable {
 
     @JoinColumn(name = "id_user")
     @OneToOne(fetch = FetchType.LAZY)
-    private User user;
+    private UserE user;
 
     @ManyToOne()
     @JoinColumn(name = "id_campus")
