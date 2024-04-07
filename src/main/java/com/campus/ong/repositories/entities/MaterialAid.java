@@ -1,5 +1,7 @@
 package com.campus.ong.repositories.entities;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MaterialAid {
+public class MaterialAid implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

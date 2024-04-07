@@ -1,5 +1,6 @@
 package com.campus.ong.repositories.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -18,7 +19,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "volunteers_h")
-public class VolunteerH {
+public class VolunteerH implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

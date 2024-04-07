@@ -1,5 +1,6 @@
 package com.campus.ong.repositories.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -18,7 +19,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "partners")
-public class Partner {
+public class Partner implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,6 @@
 package com.campus.ong.repositories.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Shipping {
+public class Shipping implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,9 +38,9 @@ public class Shipping {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date  startsAt;
 
-    @Column(name="ends_at")
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date  endsAt;
+    @NotEmpty(message = "State can't be Empty")
+    @Column(nullable = false)
+    private boolean finished;
 
     @ManyToMany
     @JoinTable(

@@ -1,5 +1,6 @@
 package com.campus.ong.repositories.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -22,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequerimentH {
+public class RequerimentH implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

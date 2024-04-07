@@ -1,5 +1,6 @@
 package com.campus.ong.repositories.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Shelter {
+public class Shelter implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

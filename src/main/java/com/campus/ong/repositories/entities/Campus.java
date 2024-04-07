@@ -1,6 +1,10 @@
 package com.campus.ong.repositories.entities;
 
+import java.io.Serializable;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -24,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Campus {
+public class Campus implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,20 +38,25 @@ public class Campus {
     @Column(nullable = false)
     private String address;
 
+    @JsonIgnore
     @JoinColumn(name = "id_city")
     @OneToOne(fetch = FetchType.LAZY)
     private City city;
 
+    @JsonIgnoreProperties(value={"campuses", "hibernateLazyInitializer", "handler"}, allowSetters=true)
     @JoinColumn(name = "id_director")
     @OneToOne(fetch = FetchType.LAZY)
     private User director;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "campus", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Partner> partners;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "campus", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Volunteer> volunteers;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "campuses", cascade = CascadeType.ALL)
     private List<Shipping> shippings;
 

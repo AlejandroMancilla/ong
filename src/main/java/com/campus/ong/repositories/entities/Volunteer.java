@@ -1,5 +1,7 @@
 package com.campus.ong.repositories.entities;
 
+import java.io.Serializable;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Volunteer {
+public class Volunteer implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
