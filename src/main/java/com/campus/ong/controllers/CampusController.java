@@ -23,17 +23,21 @@ import com.campus.ong.exception.BussinesRuleException;
 import com.campus.ong.repositories.entities.Campus;
 import com.campus.ong.services.ServiceCampus;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/campuses/")
 @AllArgsConstructor
+@Api(value = "Controller Campus", description = "Operations related with Campus")
 public class CampusController {
     
     private ServiceCampus serviceCampus;
     
     @GetMapping("/")
+    @ApiOperation(value = "List all Campus in DB") 
     public ResponseEntity<List<CampusDTO>> findAll() {
         List<CampusDTO> findAll = serviceCampus.findAll();
         if(findAll == null || findAll.isEmpty()){

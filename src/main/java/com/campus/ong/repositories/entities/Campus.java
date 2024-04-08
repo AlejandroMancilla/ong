@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,6 +38,7 @@ public class Campus implements Serializable {
 
     @NotEmpty(message = "Can't be Empty")
     @Column(nullable = false)
+    @Schema(name = "Adress", required = true, example = "Cra 4 # 48-06, Floridablanca, Santander", description = "Represents Campus'Adress")
     private String address;
 
     @JsonIgnore
