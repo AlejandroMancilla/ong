@@ -16,8 +16,12 @@ import com.campus.ong.repositories.models.JWTResponse;
 import com.campus.ong.services.JWTService;
 import com.campus.ong.services.JWTUserDetailService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 @RestController
+@Tag(name = "Authentication_Controller", description = "Token generation method with username and password")
 @AllArgsConstructor
 public class AuthenticationController {
 
@@ -25,6 +29,7 @@ public class AuthenticationController {
     private final JWTUserDetailService jwtUserDetailService;
     private final JWTService jwtService;
 
+    @Operation(summary = "Get a Token for authenticate User")
     @PostMapping("/authenticate")
     public ResponseEntity<?> postToken(@RequestBody JWTRequest request) {
         this.authenticate(request);

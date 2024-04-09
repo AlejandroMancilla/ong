@@ -22,16 +22,20 @@ import com.campus.ong.exception.BussinesRuleException;
 import com.campus.ong.repositories.entities.QuotaType;
 import com.campus.ong.services.ServiceQuota;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
+@Tag(name = "QuotaType_Controller", description = "Methods availables for Quota Types")
 @RequestMapping("/quotas/")
 @AllArgsConstructor
 public class QuotaController {
     
     private ServiceQuota serviceQuota;
 
+    @Operation(summary = "Get a List with Quota Types information")
     @GetMapping("/")
     public ResponseEntity<List<QuotaType>> findAll() {
         List<QuotaType> findAll = serviceQuota.findAll();
@@ -42,6 +46,7 @@ public class QuotaController {
         }
     }
 
+    @Operation(summary = "Get a Quota Type by its ID")
     @GetMapping("/{id}")
     public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id)throws BussinesRuleException{
          Map<String,Object> response = new HashMap<>();
@@ -50,6 +55,7 @@ public class QuotaController {
          return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
+    @Operation(summary = "Create a new Quota Type")
     @PostMapping("/")
     public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody QuotaType quota, BindingResult result) {
 
@@ -78,6 +84,7 @@ public class QuotaController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Update the QuotaType information by its ID")
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody QuotaType quota, BindingResult result,
             @PathVariable Long id) {
@@ -111,6 +118,7 @@ public class QuotaController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Delete a Quota Type by its ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 

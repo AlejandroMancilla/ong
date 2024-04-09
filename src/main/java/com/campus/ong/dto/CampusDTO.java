@@ -1,6 +1,7 @@
 package com.campus.ong.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.campus.ong.controllers.CampusController;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,12 +13,15 @@ import lombok.NoArgsConstructor;
 public class CampusDTO {
     
     private Long id;
-    private String Address;
+    @JsonView(CampusController.class)
+    private String address;
 
     private Long directorId;
+    @JsonView(CampusController.class)
     private String directorName;
 
     private Long cityId;
+    @JsonView(CampusController.class)
     private String cityName;
 
 }

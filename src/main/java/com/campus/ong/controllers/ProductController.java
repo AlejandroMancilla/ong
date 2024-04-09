@@ -23,16 +23,20 @@ import com.campus.ong.repositories.entities.Product;
 import com.campus.ong.repositories.entities.ProductType;
 import com.campus.ong.services.ServiceProduct;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
+@Tag(name = "Product_Controller", description = "Methods availables for Products")
 @RequestMapping("/products/")
 @AllArgsConstructor
 public class ProductController {
 
     private ServiceProduct serviceProduct;
     
+    @Operation(summary = "Get a List with Products information")
     @GetMapping("/")
     public ResponseEntity<List<Product>> findAll() {
         List<Product> findAll = serviceProduct.findAll();
@@ -43,6 +47,7 @@ public class ProductController {
         }
     }
 
+    @Operation(summary = "Get a Product by its ID")
     @GetMapping("/{id}")
     public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id)throws BussinesRuleException{
          Map<String,Object> response = new HashMap<>();
@@ -60,6 +65,7 @@ public class ProductController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    @Operation(summary = "Create a new Product")
     @PostMapping("/")
     public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody Product product, BindingResult result) {
 
@@ -88,6 +94,7 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Update the Product information by its ID")
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody Product product, BindingResult result,
             @PathVariable Long id) {
@@ -121,6 +128,7 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Delete a Product by its ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 

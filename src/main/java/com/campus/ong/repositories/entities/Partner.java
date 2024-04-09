@@ -29,7 +29,7 @@ public class Partner implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date  paymeentAt;
     
-    @NotEmpty(message = "Phone Number can't be Empty")
+    @NotEmpty(message = "Number Account can't be Empty")
     @Column(nullable = false)
     private String numAccount;
 

@@ -22,16 +22,20 @@ import com.campus.ong.exception.BussinesRuleException;
 import com.campus.ong.repositories.entities.Occupation;
 import com.campus.ong.services.ServiceOccupation;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
+@Tag(name = "City_Controller", description = "Methods availables for Cities")
 @RequestMapping("/occupations/")
 @AllArgsConstructor
 public class OccupationController {
     
     private ServiceOccupation serviceOccupation;
 
+    @Operation(summary = "Get a List with Cities information")
     @GetMapping("/")
     public ResponseEntity<List<Occupation>> findAll() {
         List<Occupation> findAll = serviceOccupation.findAll();
@@ -42,6 +46,7 @@ public class OccupationController {
         }
     }
 
+    @Operation(summary = "Get a Occupation by its ID")
     @GetMapping("/{id}")
     public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id)throws BussinesRuleException{
          Map<String,Object> response = new HashMap<>();
@@ -50,6 +55,7 @@ public class OccupationController {
          return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Create a new Occupation")
     @PostMapping("/")
     public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody Occupation occupation, BindingResult result) {
 
@@ -78,6 +84,7 @@ public class OccupationController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Update the Occupation Name by its ID")
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody Occupation occupation, BindingResult result,
             @PathVariable Long id) {
@@ -111,6 +118,7 @@ public class OccupationController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Delete a Occupation by its ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 

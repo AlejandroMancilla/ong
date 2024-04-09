@@ -23,16 +23,20 @@ import com.campus.ong.repositories.entities.RolType;
 import com.campus.ong.repositories.entities.UserE;
 import com.campus.ong.services.ServiceUser;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
+@Tag(name = "User_Controller", description = "Methods availables for Users")
 @RequestMapping("/users/")
 @AllArgsConstructor
 public class UserController {
     
     private ServiceUser serviceUser;
     
+    @Operation(summary = "Get a List with Users information")
     @GetMapping("/")
     public ResponseEntity<List<UserE>> findAll() {
         List<UserE> findAll = serviceUser.findAll();
@@ -43,6 +47,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Get a User by its ID")
     @GetMapping("/{id}")
     public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id)throws BussinesRuleException{
          Map<String,Object> response = new HashMap<>();
@@ -51,6 +56,7 @@ public class UserController {
          return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Get a User by its Email")
     @GetMapping("/byEmail/{email}")
     public ResponseEntity<Map<String,Object>> findAllById(@PathVariable String email) {
 
@@ -67,6 +73,7 @@ public class UserController {
          }
     }
 
+    @Operation(summary = "Get a list of users with a given role")
     @GetMapping("/byRole/{role}")
     public ResponseEntity<List<UserE>> findByRole(@PathVariable RolType role) {
         List<UserE> users = serviceUser.findByRole(role);
@@ -76,6 +83,7 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @Operation(summary = "Create a new User")
     @PostMapping("/")
     public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody UserE user, BindingResult result) {
 
@@ -104,6 +112,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Update the User information by its ID")
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody UserE user, BindingResult result,
             @PathVariable Long id) {
@@ -131,12 +140,13 @@ public class UserController {
 
         }
 
-        response.put("mensaje", "User has been successfully created");
+        response.put("mensaje", "User has been successfully Updated");
         response.put("user", userUpdate);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Delete a User by its ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 
@@ -152,4 +162,5 @@ public class UserController {
         response.put("message", "User has been successfully deleted");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }  
+
 }

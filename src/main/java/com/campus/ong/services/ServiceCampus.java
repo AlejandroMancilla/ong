@@ -16,6 +16,6 @@ public interface ServiceCampus {
 
     void delete(Long id);
 
-    Campus findById(Long id) throws BussinesRuleException;
+    CampusDTO findById(Long id) throws BussinesRuleException;
 
 }

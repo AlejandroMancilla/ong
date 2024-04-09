@@ -22,16 +22,20 @@ import com.campus.ong.exception.BussinesRuleException;
 import com.campus.ong.repositories.entities.City;
 import com.campus.ong.services.ServiceCity;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
+@Tag(name = "City_Controller", description = "Methods availables for Cities")
 @RequestMapping("/cities")
 @AllArgsConstructor
 public class CityController {
     
     private ServiceCity serviceCity;
 
+    @Operation(summary = "Get a List with Cities information")
     @GetMapping("/")
     public ResponseEntity<List<City>> findAll() {
         List<City> findAll = serviceCity.findAll();
@@ -42,6 +46,7 @@ public class CityController {
         }
     }
 
+    @Operation(summary = "Get a City by its ID")
     @GetMapping("/{id}")
     public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id)throws BussinesRuleException{
          Map<String,Object> response = new HashMap<>();
@@ -50,6 +55,7 @@ public class CityController {
          return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
+    @Operation(summary = "Create a new City")
     @PostMapping("/")
     public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody City city, BindingResult result) {
 
@@ -78,6 +84,7 @@ public class CityController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Update City Name by its ID")
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody City city, BindingResult result,
             @PathVariable Long id) {
@@ -105,12 +112,13 @@ public class CityController {
 
         }
 
-        response.put("mensaje", "City has been successfully created");
+        response.put("mensaje", "City has been successfully updated");
         response.put("cliente", cityUpdate);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Delete a City by its ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 

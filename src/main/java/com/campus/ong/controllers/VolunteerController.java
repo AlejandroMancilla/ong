@@ -21,16 +21,20 @@ import com.campus.ong.exception.BussinesRuleException;
 import com.campus.ong.repositories.entities.Volunteer;
 import com.campus.ong.services.ServiceVolunteer;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
+@Tag(name = "Volunteer_Controller", description = "Methods availables for Volunteers")
 @RequestMapping("/volunteers/")
 @AllArgsConstructor
 public class VolunteerController {
 
     private ServiceVolunteer serviceVolunteer;
     
+    @Operation(summary = "Get a List with Volunteers information")
     @GetMapping("/")
     public ResponseEntity<List<Volunteer>> findAll() {
         List<Volunteer> findAll = serviceVolunteer.findAll();
@@ -41,6 +45,7 @@ public class VolunteerController {
         }
     }
 
+    @Operation(summary = "Get a Volunteer by its ID")
     @GetMapping("/{id}")
     public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id)throws BussinesRuleException{
          Map<String,Object> response = new HashMap<>();
@@ -49,6 +54,7 @@ public class VolunteerController {
          return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Create a new Volunteer")
     @PostMapping("/")
     public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody Volunteer volunteer, BindingResult result) {
 
@@ -77,6 +83,7 @@ public class VolunteerController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Delete a Volunteer by its ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 

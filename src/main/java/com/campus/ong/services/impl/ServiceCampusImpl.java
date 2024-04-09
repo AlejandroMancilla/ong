@@ -1,6 +1,5 @@
 package com.campus.ong.services.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,13 +44,13 @@ public class ServiceCampusImpl implements ServiceCampus{
     }
 
     @Override
-    public Campus findById(Long id) throws BussinesRuleException {
+    public CampusDTO findById(Long id) throws BussinesRuleException {
         Optional<Campus> campusOptional = repositoryCampus.findById(id);
         if(!campusOptional.isPresent()){
             BussinesRuleException exception= new BussinesRuleException("1005","Error! Campus doesn't exist", HttpStatus.PRECONDITION_FAILED);
             throw exception; 
         }
-        return campusOptional.get();
+        return convert.convertCampusDTO(campusOptional.get());
     }
 
     @Override

@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,9 +21,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.campus.ong.components.JwtAuthenticationEntryPoint;
-import com.campus.ong.services.JWTUserDetailService;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -37,8 +33,8 @@ public class SecurityConfig {
         var requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName("_csrf");
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/reports/**").hasRole("AUXILIAR")
-                .requestMatchers("/partners/**", "/volunteers/**", "/shippings/**").hasRole("DIRECTOR")
+                .requestMatchers("/products/**").hasRole("AUXILIAR")
+                .requestMatchers("/partners/**", "/volunteers/**", "/shippings/**", "/users/**").hasRole("DIRECTOR")
                 .requestMatchers("/campuses/**").hasRole("ADMIN")
                 .anyRequest().permitAll())
                 .formLogin(Customizer.withDefaults())

@@ -9,25 +9,28 @@ import com.campus.ong.exception.BussinesRuleException;
 import com.campus.ong.repositories.entities.Shipping;
 import com.campus.ong.services.ServiceShipping;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
+
 import java.util.List;
 
 @RestController
+@Tag(name = "Shipping_Controller", description = "Methods availables for Shippings")
 @RequestMapping("/shippings/")
+@AllArgsConstructor
 public class ShippingController {
 
     private ServiceShipping serviceShipping;
 
-    @Autowired
-    public ShippingController(ServiceShipping serviceShipping) {
-        this.serviceShipping = serviceShipping;
-    }
-
-    @GetMapping
+    @Operation(summary = "Get a List with Shippings information")
+    @GetMapping("/")
     public ResponseEntity<List<Shipping>> getAllShippings() {
         List<Shipping> shippings = serviceShipping.findAll();
         return new ResponseEntity<>(shippings, HttpStatus.OK);
     }
 
+    @Operation(summary = "Get a Shipping by its ID")
     @GetMapping("/{id}")
     public ResponseEntity<Shipping> getShippingById(@PathVariable Long id) {
         try {
@@ -38,6 +41,7 @@ public class ShippingController {
         }
     }
 
+    @Operation(summary = "Get a List with Shippings with a given finished status")
     @GetMapping("/finished/{state}")
     public ResponseEntity<List<Shipping>> getShippingsByFinished(@PathVariable Boolean state) {
         try {
@@ -48,6 +52,7 @@ public class ShippingController {
         }
     }
 
+    @Operation(summary = "Get a List with Shippings organised by a given campus")
     @GetMapping("/campus/{campusId}")
     public ResponseEntity<List<Shipping>> getShippingsByCampusId(@PathVariable Long campusId) {
         try {
@@ -58,12 +63,14 @@ public class ShippingController {
         }
     }
 
+    @Operation(summary = "Create a new Shipping")
     @PostMapping
     public ResponseEntity<Shipping> createShipping(@RequestBody Shipping shipping) {
         Shipping createdShipping = serviceShipping.save(shipping);
         return new ResponseEntity<>(createdShipping, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Update the Shipping information by its ID")
     @PutMapping("/{id}")
     public ResponseEntity<Shipping> updateShipping(@PathVariable Long id, @RequestBody Shipping shipping) {
         Shipping updatedShipping = serviceShipping.update(id, shipping);
@@ -74,6 +81,7 @@ public class ShippingController {
         }
     }
 
+    @Operation(summary = "Delete a Shipping by its ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteShipping(@PathVariable Long id) {
         serviceShipping.delete(id);

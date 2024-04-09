@@ -19,20 +19,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.campus.ong.exception.BussinesRuleException;
-import com.campus.ong.repositories.entities.City;
 import com.campus.ong.repositories.entities.Shelter;
 import com.campus.ong.services.ServiceShelter;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
+@Tag(name = "Shelter_Controller", description = "Methods availables for Shelters")
 @RequestMapping("/shelters/")
 @AllArgsConstructor
 public class ShelterController {
 
     private ServiceShelter serviceShelter;
 
+    @Operation(summary = "Get a List with Shelters information")
     @GetMapping
     public ResponseEntity<List<Shelter>> getAllShelters() {
         List<Shelter> shelters = serviceShelter.findAll();
@@ -43,6 +46,7 @@ public class ShelterController {
         }
     }
 
+    @Operation(summary = "Get a Shelter by its ID")
     @GetMapping("/{id}")
     public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id) throws BussinesRuleException {
         Map<String,Object> response = new HashMap<>();
@@ -51,6 +55,7 @@ public class ShelterController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Create a new Shelter")
     @PostMapping
     public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody Shelter shelter, BindingResult result){
         Shelter shelterNew = null;
@@ -78,6 +83,7 @@ public class ShelterController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Update the Shelter information by its ID")
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody Shelter shelter, BindingResult result,
     @PathVariable Long id) {
@@ -111,6 +117,7 @@ public class ShelterController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Delete a Shelter by its ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();

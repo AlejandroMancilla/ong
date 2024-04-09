@@ -2,7 +2,6 @@ package com.campus.ong.repositories.entities;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -32,13 +31,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Campus implements Serializable {
     
+    @Schema(description = "Campus Identifier")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Schema(description = "Address of Campus")
     @NotEmpty(message = "Can't be Empty")
     @Column(nullable = false)
-    @Schema(name = "Adress", required = true, example = "Cra 4 # 48-06, Floridablanca, Santander", description = "Represents Campus'Adress")
     private String address;
 
     @JsonIgnore
@@ -46,6 +46,7 @@ public class Campus implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     private City city;
 
+    @Schema(description = "Director of the Campus")
     @JsonIgnoreProperties(value={"campuses", "hibernateLazyInitializer", "handler"}, allowSetters=true)
     @JoinColumn(name = "id_director", unique = true)
     @OneToOne(fetch = FetchType.LAZY)

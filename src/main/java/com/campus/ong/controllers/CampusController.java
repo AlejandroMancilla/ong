@@ -22,22 +22,24 @@ import com.campus.ong.dto.CampusDTO;
 import com.campus.ong.exception.BussinesRuleException;
 import com.campus.ong.repositories.entities.Campus;
 import com.campus.ong.services.ServiceCampus;
+import com.fasterxml.jackson.annotation.JsonView;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
+@Tag(name = "Campus_Controller", description = "Methods availables for Campus")
 @RequestMapping("/campuses/")
 @AllArgsConstructor
-@Api(value = "Controller Campus", description = "Operations related with Campus")
 public class CampusController {
     
     private ServiceCampus serviceCampus;
     
+    @Operation(summary = "Get a List with Campuses information")
     @GetMapping("/")
-    @ApiOperation(value = "List all Campus in DB") 
+    @JsonView(CampusController.class)
     public ResponseEntity<List<CampusDTO>> findAll() {
         List<CampusDTO> findAll = serviceCampus.findAll();
         if(findAll == null || findAll.isEmpty()){
@@ -47,14 +49,17 @@ public class CampusController {
         }
     }
 
+    @Operation(summary = "Get a Campus by its ID")
     @GetMapping("/{id}")
+    @JsonView(CampusController.class)
     public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id)throws BussinesRuleException{
          Map<String,Object> response = new HashMap<>();
-         Campus campus = serviceCampus.findById(id);
+         CampusDTO campus = serviceCampus.findById(id);
          response.put("campus", campus);
          return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Create a new Campus")
     @PostMapping("/")
     public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody CampusDTO campus, BindingResult result){
         CampusDTO campusNew = null;
@@ -82,7 +87,7 @@ public class CampusController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
+    @Operation(summary = "Update the Campus information by its ID")
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody Campus campus, BindingResult result,
             @PathVariable Long id) {
@@ -116,6 +121,7 @@ public class CampusController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Delete a Campus by its ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 
