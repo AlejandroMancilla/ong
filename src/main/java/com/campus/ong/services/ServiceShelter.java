@@ -12,12 +12,12 @@ public interface ServiceShelter {
 
     ShelterDTO findById(Long id) throws BussinesRuleException;
 
-    ShelterDTO save(Shelter Shelter);
+    ShelterDTO save(ShelterDTO Shelter);
 
-    ShelterDTO update(Long id, Shelter Shelter);
+    ShelterDTO update(Long id, ShelterDTO Shelter);
 
     void delete(Long id);
 
-    List<ShelterDTO> findByCityId(Long id);
+    List<ShelterDTO> findByCityId(Long id) throws BussinesRuleException;
 
 }
