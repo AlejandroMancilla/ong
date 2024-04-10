@@ -39,7 +39,7 @@ public class RequerimentH implements Serializable {
 
     @NotEmpty(message = "Amount can't be Empty")
     @Column(nullable = false)
-    private Long amount;
+    private Float amount;
 
     @ManyToMany
     @JoinTable(

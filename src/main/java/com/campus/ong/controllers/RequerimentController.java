@@ -3,16 +3,13 @@ package com.campus.ong.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.campus.ong.common.StandarizedApiExceptionResponse;
-import com.campus.ong.dto.RequerimentVolunteersDTO;
-import com.campus.ong.exception.BussinesRuleException;
+import com.campus.ong.dto.RequerimentHDTO;
 import com.campus.ong.repositories.entities.RequerimentH;
 import com.campus.ong.services.ServiceRequerimentH;
 
@@ -44,13 +41,7 @@ public class RequerimentController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createRequerimentWithVolunteers(@RequestBody RequerimentVolunteersDTO requerimentWithVolunteersDTO) {
-        try {
-            RequerimentH createdRequeriment = serviceRequerimentH.createRequerimentWithVolunteers(requerimentWithVolunteersDTO);
-            return ResponseEntity.ok().body(createdRequeriment);
-        } catch (BussinesRuleException e) {
-            StandarizedApiExceptionResponse response = new StandarizedApiExceptionResponse("Validation Error", e.getCode(), e.getMessage());
-            return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(response);
-        }
+    public ResponseEntity<?> createRequerimentWithVolunteers(@RequestBody RequerimentHDTO requerimentWithVolunteersDTO) {
+        return null;
     }
 }

@@ -9,12 +9,12 @@ public interface ServiceMaterialAid {
     
     List<MaterialDTO> getAllMaterialAid();
 
-    MaterialDTO getMaterialAidById(Long id);
+    MaterialDTO findById(Long id);
 
-    MaterialDTO createMaterialAid(MaterialAid material);
+    MaterialDTO save(MaterialAid material);
 
-    MaterialAid updateMaterialAid(MaterialAid material);
+    MaterialAid update(MaterialAid material);
 
-    void deleteMaterialAid(Long id);
+    void delete(Long id);
 
 }

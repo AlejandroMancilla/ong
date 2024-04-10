@@ -28,25 +28,25 @@ public class ServiceMaterialAidImpl implements ServiceMaterialAid{
     }
 
     @Override
-    public MaterialDTO getMaterialAidById(Long id) {
+    public MaterialDTO findById(Long id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getMaterialAidById'");
     }
 
     @Override
-    public MaterialDTO createMaterialAid(MaterialAid material) {
+    public MaterialDTO save(MaterialAid material) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'createMaterialAid'");
     }
 
     @Override
-    public MaterialAid updateMaterialAid(MaterialAid material) {
+    public MaterialAid update(MaterialAid material) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'updateMaterialAid'");
     }
 
     @Override
-    public void deleteMaterialAid(Long id) {
+    public void delete(Long id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteMaterialAid'");
     }

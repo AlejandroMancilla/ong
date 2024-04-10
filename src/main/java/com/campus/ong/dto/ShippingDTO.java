@@ -32,4 +32,7 @@ public class ShippingDTO {
     @JsonView(ShippingController.class)
     private List<MaterialDTO> materials;
 
+    @JsonView(ShippingController.class)
+    private List<RequerimentHDTO> requeriments;
+
 }
