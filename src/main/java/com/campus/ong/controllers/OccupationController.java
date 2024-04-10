@@ -28,14 +28,14 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
-@Tag(name = "City_Controller", description = "Methods availables for Cities")
+@Tag(name = "Occupation_Controller", description = "Methods availables for Occupations")
 @RequestMapping("/occupations/")
 @AllArgsConstructor
 public class OccupationController {
     
     private ServiceOccupation serviceOccupation;
 
-    @Operation(summary = "Get a List with Cities information")
+    @Operation(summary = "Get a List with Occupations information")
     @GetMapping("/")
     public ResponseEntity<List<Occupation>> findAll() {
         List<Occupation> findAll = serviceOccupation.findAll();

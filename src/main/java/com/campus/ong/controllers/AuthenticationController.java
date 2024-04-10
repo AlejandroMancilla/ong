@@ -1,6 +1,5 @@
 package com.campus.ong.controllers;
 
-
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,9 +18,8 @@ import com.campus.ong.services.JWTUserDetailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-
 @RestController
-@Tag(name = "Authentication_Controller", description = "Token generation method with username and password")
+@Tag(name = "Authentication", description = "Get a Token to authenticate User")
 @AllArgsConstructor
 public class AuthenticationController {
 
@@ -29,11 +27,10 @@ public class AuthenticationController {
     private final JWTUserDetailService jwtUserDetailService;
     private final JWTService jwtService;
 
-    @Operation(summary = "Get a Token for authenticate User")
+    @Operation(summary = "Get a Token trought Username and Password")
     @PostMapping("/authenticate")
     public ResponseEntity<?> postToken(@RequestBody JWTRequest request) {
         this.authenticate(request);
-        System.out.println(request.getUsername());
 
         final var userDetails = this.jwtUserDetailService.loadUserByUsername(request.getUsername());
 

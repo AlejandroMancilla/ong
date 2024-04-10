@@ -1,12 +1,10 @@
 package com.campus.ong.security;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,51 +18,51 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.List;
 
+@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
+    //As csrf isn't required, we disabled it
     @Bean
     @Autowired
     SecurityFilterChain securityFilterChain(HttpSecurity http, JWTValidationFilter jwtValidationFilter)
             throws Exception {
-        http.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         var requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName("_csrf");
-        http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/reports/**").hasAnyRole("AUXILIAR", "DIRECTOR", "ADMIN")
-                .requestMatchers("/partners/**", "/volunteers/**", "/shippings/**").hasAnyRole("DIRECTOR", "ADMIN")
-                .requestMatchers("/cities/**", "/campuses/**", "/occupations/**", "/partners/**", "/products/**", "/quotas/**", "/shelters/**", "/shippings/**",  "/users/**", "/volunteers/**").hasRole("ADMIN")
-                .anyRequest().permitAll())
-                .formLogin(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults());
-        http.addFilterAfter(jwtValidationFilter, BasicAuthenticationFilter.class);
+        http.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/reports/**").hasAnyRole("AUXILIAR", "DIRECTOR", "ADMIN")
+                    .requestMatchers("/partners/**", "/volunteers/**", "/shippings/**").hasAnyRole("DIRECTOR", "ADMIN")
+                    .requestMatchers("/cities/**", "/campuses/**", "/occupations/**", "/partners/**", "/products/**", "/quotas/**", "/shelters/**", "/shippings/**",  "/users/**", "/volunteers/**", "/requeriments/**").hasRole("ADMIN")
+                    .requestMatchers("/authenticate/**", "/register").permitAll()
+                    .requestMatchers(SWAGGER_WHILELIST).permitAll()
+                    .anyRequest().permitAll())
+                .addFilterAfter(jwtValidationFilter, BasicAuthenticationFilter.class);
         http.cors(cors -> corsConfigurationSource());
-        http.csrf(csrf -> csrf
-                .csrfTokenRequestHandler(requestHandler)
-                .ignoringRequestMatchers("/welcome", "/about_us", "/authenticate","/h2-console")
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
+        http.csrf(csrf -> csrf.disable());
         return http.build();
     }
 
+    private static final String[] SWAGGER_WHILELIST = {
+        "/swagger-ui/**",
+        "/v3/api-docs/**",
+        "/swagger-resources/**",
+        "/swagger-resources"
+    };
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
-
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         var config = new CorsConfiguration();
-
         config.setAllowedOrigins(List.of("*"));
         config.setAllowedMethods(List.of("*"));
         config.setAllowedHeaders(List.of("*"));
-
         var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-
         return source;
     }
 

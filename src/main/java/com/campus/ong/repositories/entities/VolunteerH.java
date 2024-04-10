@@ -16,9 +16,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "volunteers_h")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class VolunteerH implements Serializable {
     
     @Id

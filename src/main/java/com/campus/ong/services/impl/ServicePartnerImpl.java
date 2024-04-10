@@ -22,11 +22,9 @@ import com.campus.ong.repositories.entities.UserE;
 import com.campus.ong.services.ServicePartner;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 public class ServicePartnerImpl implements ServicePartner{
     
     @Autowired

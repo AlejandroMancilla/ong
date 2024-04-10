@@ -1,19 +1,25 @@
 package com.campus.ong.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import com.campus.ong.dto.ShippingDTO;
 import com.campus.ong.exception.BussinesRuleException;
 import com.campus.ong.repositories.entities.Shipping;
 import com.campus.ong.services.ServiceShipping;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @Tag(name = "Shipping_Controller", description = "Methods availables for Shippings")
@@ -25,66 +31,85 @@ public class ShippingController {
 
     @Operation(summary = "Get a List with Shippings information")
     @GetMapping("/")
-    public ResponseEntity<List<Shipping>> getAllShippings() {
-        List<Shipping> shippings = serviceShipping.findAll();
+    @JsonView(ShippingController.class)
+    public ResponseEntity<List<ShippingDTO>> getAllShippings() {
+        List<ShippingDTO> shippings = serviceShipping.findAll();
         return new ResponseEntity<>(shippings, HttpStatus.OK);
     }
 
     @Operation(summary = "Get a Shipping by its ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Shipping> getShippingById(@PathVariable Long id) {
-        try {
-            Shipping shipping = serviceShipping.findById(id);
-            return new ResponseEntity<>(shipping, HttpStatus.OK);
-        } catch (BussinesRuleException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @JsonView(ShippingController.class)
+    public ResponseEntity<Map<String,Object>> getShippingById(@PathVariable Long id) throws BussinesRuleException {
+        Map<String,Object> response = new HashMap<>();
+        ShippingDTO shipping = serviceShipping.findById(id);
+        response.put("shipping", shipping);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "Get a List with Shippings with a given finished status")
     @GetMapping("/finished/{state}")
-    public ResponseEntity<List<Shipping>> getShippingsByFinished(@PathVariable Boolean state) {
-        try {
-            List<Shipping> shippings = serviceShipping.findByFinished(state);
-            return new ResponseEntity<>(shippings, HttpStatus.OK);
-        } catch (BussinesRuleException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @JsonView(ShippingController.class)
+    public ResponseEntity<Map<String,Object>> getShippingsByFinished(@PathVariable Boolean state) throws BussinesRuleException {
+        Map<String,Object> response = new HashMap<>();
+        List<ShippingDTO> shippings = serviceShipping.findByFinished(state);
+        response.put("shipping", shippings);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "Get a List with Shippings organised by a given campus")
     @GetMapping("/campus/{campusId}")
-    public ResponseEntity<List<Shipping>> getShippingsByCampusId(@PathVariable Long campusId) {
-        try {
-            List<Shipping> shippings = serviceShipping.findByCampusesId(campusId);
-            return new ResponseEntity<>(shippings, HttpStatus.OK);
-        } catch (BussinesRuleException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @JsonView(ShippingController.class)
+    public ResponseEntity<Map<String,Object>> getShippingsByCampusId(@PathVariable Long campusId) throws BussinesRuleException {
+        Map<String,Object> response = new HashMap<>();
+        List<ShippingDTO> shippings = serviceShipping.findByCampusesId(campusId);
+        response.put("shipping", shippings);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "Create a new Shipping")
     @PostMapping
-    public ResponseEntity<Shipping> createShipping(@RequestBody Shipping shipping) {
-        Shipping createdShipping = serviceShipping.save(shipping);
-        return new ResponseEntity<>(createdShipping, HttpStatus.CREATED);
+    @JsonView(ShippingController.class)
+    public ResponseEntity<Map<String, Object>> createShipping(@RequestBody ShippingDTO shipping, BindingResult result) throws BussinesRuleException {
+        Shipping shippingNew = null;
+
+        Map<String, Object> response = new HashMap<>();
+
+        if (result.hasErrors()) {
+            List<String> errors = result.getFieldErrors()
+                    .stream()
+                    .map(err -> "Field " + err.getField() + " " + err.getDefaultMessage())
+                    .collect(Collectors.toList());
+            response.put("errors", errors);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        try {
+            shippingNew = serviceShipping.save(shipping);
+        } catch (DataAccessException e) {
+            response.put("message", "Error when inserting in the database ShippingDTO");
+            response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        response.put("message", "Shipping has been successfully created");
+        response.put("shipping", shippingNew);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Operation(summary = "Update the Shipping information by its ID")
-    @PutMapping("/{id}")
-    public ResponseEntity<Shipping> updateShipping(@PathVariable Long id, @RequestBody Shipping shipping) {
-        Shipping updatedShipping = serviceShipping.update(id, shipping);
-        if (updatedShipping != null) {
-            return new ResponseEntity<>(updatedShipping, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+
 
     @Operation(summary = "Delete a Shipping by its ID")
     @DeleteMapping("/{id}")
+    @JsonView(ShippingController.class)
     public ResponseEntity<Void> deleteShipping(@PathVariable Long id) {
         serviceShipping.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "Change State of a Shipping to finished")
+    @PutMapping("/{shippingId}/finish")
+    public ResponseEntity<?> finishShipping(@PathVariable Long shippingId) {
+        return null;
+        
     }
 }

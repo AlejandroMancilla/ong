@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.campus.ong.dto.ShelterDTO;
 import com.campus.ong.exception.BussinesRuleException;
-import com.campus.ong.repositories.entities.Shelter;
 import com.campus.ong.services.ServiceShelter;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,28 +38,31 @@ public class ShelterController {
 
     @Operation(summary = "Get a List with Shelters information")
     @GetMapping
-    public ResponseEntity<List<Shelter>> getAllShelters() {
-        List<Shelter> shelters = serviceShelter.findAll();
-        if(shelters == null || shelters.isEmpty()){
+    @JsonView(ShelterController.class)
+    public ResponseEntity<List<ShelterDTO>> findAll() {
+        List<ShelterDTO> findAll = serviceShelter.findAll();
+        if(findAll == null || findAll.isEmpty()){
             return ResponseEntity.noContent().build();
         }else{
-            return ResponseEntity.ok(shelters);
+            return ResponseEntity.ok(findAll);
         }
     }
 
     @Operation(summary = "Get a Shelter by its ID")
     @GetMapping("/{id}")
+    @JsonView(ShelterController.class)
     public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id) throws BussinesRuleException {
         Map<String,Object> response = new HashMap<>();
-        Shelter shelter = serviceShelter.findById(id);
+        ShelterDTO shelter = serviceShelter.findById(id);
         response.put("shelter", shelter);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "Create a new Shelter")
     @PostMapping
-    public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody Shelter shelter, BindingResult result){
-        Shelter shelterNew = null;
+    @JsonView(ShelterController.class)
+    public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody ShelterDTO shelter, BindingResult result){
+        ShelterDTO shelterNew = null;
 
         Map<String, Object> response = new HashMap<>();
 
@@ -85,10 +89,11 @@ public class ShelterController {
 
     @Operation(summary = "Update the Shelter information by its ID")
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody Shelter shelter, BindingResult result,
+    @JsonView(ShelterController.class)
+    public ResponseEntity<Map<String, Object>> update(@Valid @RequestBody ShelterDTO shelter, BindingResult result,
     @PathVariable Long id) {
        
-        Shelter shelterUpdate = null;
+        ShelterDTO shelterUpdate = null;
 
         Map<String, Object> response = new HashMap<>();
 

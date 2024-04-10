@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.campus.ong.dto.ShelterDTO;
 import com.campus.ong.exception.BussinesRuleException;
-import com.campus.ong.repositories.entities.Shelter;
 
 public interface ServiceShelter {
     
