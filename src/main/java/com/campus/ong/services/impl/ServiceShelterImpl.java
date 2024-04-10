@@ -63,5 +63,11 @@ public class ServiceShelterImpl implements ServiceShelter {
         return shelterOptional.get();
     }
 
+    @Override
+    public List<Shelter> findByCityId(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findByCityId'");
+    }
+
    
 }

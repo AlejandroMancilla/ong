@@ -33,9 +33,9 @@ public class SecurityConfig {
         var requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName("_csrf");
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/products/**").hasRole("AUXILIAR")
-                .requestMatchers("/partners/**", "/volunteers/**", "/shippings/**", "/users/**").hasRole("DIRECTOR")
-                .requestMatchers("/campuses/**").hasRole("ADMIN")
+                .requestMatchers("/reports/**").hasAnyRole("AUXILIAR", "DIRECTOR", "ADMIN")
+                .requestMatchers("/partners/**", "/volunteers/**", "/shippings/**").hasAnyRole("DIRECTOR", "ADMIN")
+                .requestMatchers("/cities/**", "/campuses/**", "/occupations/**", "/partners/**", "/products/**", "/quotas/**", "/shelters/**", "/shippings/**",  "/users/**", "/volunteers/**").hasRole("ADMIN")
                 .anyRequest().permitAll())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
