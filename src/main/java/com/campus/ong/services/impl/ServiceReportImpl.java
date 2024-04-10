@@ -9,19 +9,18 @@ import com.campus.ong.dto.MaterialDTO;
 import com.campus.ong.dto.PartnerDTO;
 import com.campus.ong.dto.VolunteerDTO;
 import com.campus.ong.repositories.entities.RequerimentH;
-import com.campus.ong.repositories.entities.Volunteer;
-import com.campus.ong.services.ReportService;
 import com.campus.ong.services.ServiceCampus;
 import com.campus.ong.services.ServiceMaterialAid;
 import com.campus.ong.services.ServicePartner;
 import com.campus.ong.services.ServiceRequerimentH;
 import com.campus.ong.services.ServiceVolunteer;
+import com.campus.ong.services.ServiceReport;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class ReportServiceImpl implements ReportService{
+public class ServiceReportImpl implements ServiceReport {
 
     private final ServicePartner partnerService;
     private final ServiceCampus campusService;
@@ -50,7 +49,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public List<Volunteer> getVolunteers() {
+    public List<VolunteerDTO> getVolunteers() {
         return volunteerHService.findAll();
     }
 

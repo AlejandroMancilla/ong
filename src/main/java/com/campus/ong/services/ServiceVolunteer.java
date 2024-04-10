@@ -2,16 +2,16 @@ package com.campus.ong.services;
 
 import java.util.List;
 
+import com.campus.ong.dto.VolunteerDTO;
 import com.campus.ong.exception.BussinesRuleException;
-import com.campus.ong.repositories.entities.Volunteer;
 
 public interface ServiceVolunteer {
     
-    List<Volunteer> findAll();
+    List<VolunteerDTO> findAll();
 
-    Volunteer findById(Long id) throws BussinesRuleException;
+    VolunteerDTO findById(Long id) throws BussinesRuleException;
 
-    Volunteer save(Volunteer Volunteer);
+    VolunteerDTO save(VolunteerDTO Volunteer);
 
     void delete(Long id);
 

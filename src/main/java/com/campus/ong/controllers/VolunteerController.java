@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.campus.ong.dto.VolunteerDTO;
 import com.campus.ong.exception.BussinesRuleException;
-import com.campus.ong.repositories.entities.Volunteer;
 import com.campus.ong.services.ServiceVolunteer;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,8 +37,9 @@ public class VolunteerController {
     
     @Operation(summary = "Get a List with Volunteers information")
     @GetMapping("/")
-    public ResponseEntity<List<Volunteer>> findAll() {
-        List<Volunteer> findAll = serviceVolunteer.findAll();
+    @JsonView(ShippingController.class)
+    public ResponseEntity<List<VolunteerDTO>> findAll() {
+        List<VolunteerDTO> findAll = serviceVolunteer.findAll();
         if(findAll == null || findAll.isEmpty()){
             return ResponseEntity.noContent().build();
         }else{
@@ -49,16 +51,16 @@ public class VolunteerController {
     @GetMapping("/{id}")
     public ResponseEntity<Map<String,Object>> findAllById(@PathVariable Long id)throws BussinesRuleException{
          Map<String,Object> response = new HashMap<>();
-         Volunteer volunteer = serviceVolunteer.findById(id);
+         VolunteerDTO volunteer = serviceVolunteer.findById(id);
          response.put("volunteer",  volunteer);
          return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "Create a new Volunteer")
     @PostMapping("/")
-    public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody Volunteer volunteer, BindingResult result) {
+    public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody VolunteerDTO volunteer, BindingResult result) {
 
-        Volunteer volunteerNew = null;
+        VolunteerDTO volunteerNew = null;
 
         Map<String, Object> response = new HashMap<>();
 
