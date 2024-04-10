@@ -19,7 +19,7 @@ public class ShippingDTO {
     private Date startsAt;
     
     @JsonView(ShippingController.class)
-    private boolean state;
+    private boolean finished;
 
     private Long shelter_id;
     @JsonView(ShippingController.class)

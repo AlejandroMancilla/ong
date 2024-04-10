@@ -63,7 +63,7 @@ public class ServiceShippingImpl implements ServiceShipping {
             Shipping shippingEntity = convert.convertShipping(shipping);
             shippingEntity.setCampuses(campuses);
             shippingEntity.setShelter(shelterOptional.get());
-            return shippingEntity;
+            return repositoryShipping.save(shippingEntity);
         }
         return null;
     }

@@ -40,7 +40,6 @@ public class Shipping implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date  startsAt;
 
-    @NotEmpty(message = "State can't be Empty")
     @Column(nullable = false)
     private boolean finished;
 

@@ -69,7 +69,6 @@ public class ShippingController {
 
     @Operation(summary = "Create a new Shipping")
     @PostMapping
-    @JsonView(ShippingController.class)
     public ResponseEntity<Map<String, Object>> createShipping(@RequestBody ShippingDTO shipping, BindingResult result) throws BussinesRuleException {
         Shipping shippingNew = null;
 
