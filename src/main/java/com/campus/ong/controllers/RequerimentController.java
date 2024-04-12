@@ -15,12 +15,14 @@ import com.campus.ong.services.ServiceRequerimentH;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @RestController
 @RequestMapping("/requeriments/")
+@Tag(name = "Requirement_Controller", description = "Methods Availables for Requirements")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
